@@ -1,27 +1,23 @@
 import java.util.Scanner;
 
 public class App {
-
-  public static void isThree(int b) {
-    if (b == 3) {
-      System.out.println("b is 3");
-    }
-  }
   public static void main(String[] args) throws Exception {
 
-    int a = 12;
-    int b = 13;
-
-    if (a == 12) {
-      System.out.println("a is 12");
-      if (a < 5) {
-        System.out.println("It's less than 5");
-        if (a < b) {
-          System.out.println("It's less than b");
-        }
-      }
+    char shirtSize = 'L';
+    switch (shirtSize) {
+      case 'M':// eliminate break to also print the next case’s instructions
+      case 'm':
+        System.out.print("Size Medium");
+        break;
+      case 'L':// eliminate break to also print the next case’s instructions  
+      case 'l':
+        System.out.print("Size Large");
+        break;
+      case 'X':// eliminate break to also print the next case’s instructions
+      case 'x':
+        System.out.print("Size XLarge");
+      default:
+        System.out.println("One Size Fits All");
     }
-    isThree(b);
   }
-
 }
