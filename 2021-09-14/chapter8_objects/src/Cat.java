@@ -4,7 +4,11 @@ public class Cat {
   private String name;
 
   // * Constant *//
-  private static final String DEFAULT_NAME = "purple";
+  public static final String DEFAULT_NAME = "twinkle";
+
+  private Toy toy;
+
+  private int lives;
 
   // * Constructors here *//
   public Cat() {
@@ -13,23 +17,36 @@ public class Cat {
     this(DEFAULT_NAME);
   }
 
-  public Cat(String theName) {
+  public Cat(String newName) {
     // do work to initialize things
-    name = theName;
+    this(newName, new Toy("blue"));
+  }
+
+  public Cat(String newName, Toy newToy) {
+    // do work to initialize things
+    this(newName, newToy, 9);
+  }
+
+  public Cat(String newName, Toy newToy, int newLives) {
+    // do work to initialize things
+    name = newName;
+    toy = newToy;
+    lives = newLives;
   }
 
   // * Getters and Setters here *//
+  public Toy getToy() {
+    return toy;
+  }
+
+  public int getLives() {
+    return lives;
+  }
+
   // a getter method
   // allows users of this class to read a private variable
   public String getName() {
     return name;
-  }
-
-  public int getLevelOfMysteriousness() {
-    if (this.name == DEFAULT_NAME) {
-      return 10;
-    }
-    return 2;
   }
 
   // a setter method
@@ -45,6 +62,23 @@ public class Cat {
 
   public void jump() {
     System.out.println("jump");
+  }
+
+  // * helpers *//
+  public int getLevelOfMysteriousness() {
+    if (this.name == DEFAULT_NAME) {
+      return 10;
+    }
+    return 2;
+  }
+
+  public void play(Toy toy) {
+    toy.setColor("red");
+  }
+
+  // * Overrides *//
+  public String toString() {
+    return name + "-" + toy.getColor() + " lives: " + lives;
   }
 
 }
