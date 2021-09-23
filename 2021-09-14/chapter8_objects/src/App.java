@@ -11,12 +11,15 @@ public class App {
     int lives = 20;
     Cat cat = new Cat("Carl", toy, lives);
 
-    System.out.println(Cat.DEFAULT_NAME);
+    // Cat.checkHealth();
+    // cat.checkHealth();
 
-    System.out.println(cat);
-    App.play(toy);
-    lives = 30;
-    System.out.println(cat);
+    // System.out.println(Cat.DEFAULT_NAME);
+
+    // System.out.println(cat);
+    // App.play(toy);
+    // lives = 30;
+    // System.out.println(cat);
 
     // Cat cat1 = new Cat();
     // cat1.setName("cool name");

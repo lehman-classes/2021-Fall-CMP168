@@ -8,7 +8,7 @@ public class Cat {
 
   private Toy toy;
 
-  private int lives;
+  private static int lives;
 
   // * Constructors here *//
   public Cat() {
@@ -74,6 +74,14 @@ public class Cat {
 
   public void play(Toy toy) {
     toy.setColor("red");
+  }
+
+  public static void checkHealth() {
+    if (lives > 5) {
+      System.out.println("all good");
+      return;
+    }
+    System.out.println("not so good");
   }
 
   // * Overrides *//

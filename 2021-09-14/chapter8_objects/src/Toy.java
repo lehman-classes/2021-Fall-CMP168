@@ -3,6 +3,7 @@ public class Toy {
 
   public Toy(String newColor) {
     color = newColor;
+
   }
 
   public String getColor() {
@@ -12,4 +13,5 @@ public class Toy {
   public void setColor(String newValue) {
     color = newValue;
   }
+
 }
