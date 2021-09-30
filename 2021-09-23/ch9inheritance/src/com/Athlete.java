@@ -1,12 +1,12 @@
+package com;
+
+import com.base.Person;
+
 public class Athlete extends Person {
   private double weight;
   private int speed;
 
   public Athlete() {
-  }
-
-  public Athlete(String newName, int newAge) {
-    super(newName, newAge);
   }
 
   public Athlete(double newWeight, int newSpeed) {

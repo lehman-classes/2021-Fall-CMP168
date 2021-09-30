@@ -1,3 +1,5 @@
+package com;
+
 public class Player extends Athlete {
   private String sport;
   private int favoriteNumber;
@@ -6,7 +8,8 @@ public class Player extends Athlete {
   }
 
   public Player(String newName, int newAge, String newSport, int newFavoriteNumber) {
-    super(newName, newAge);
+    name = newName;
+    age = newAge;
     sport = newSport;
     favoriteNumber = newFavoriteNumber;
   }
