@@ -7,10 +7,15 @@ public abstract class CollectibleItem {
   protected int year;
   protected int rarety;
 
+  public CollectibleItem() {
+    System.out.println("CollectibleItem constructor");
+  }
+
   public CollectibleItem(String newName, int newYear, int newRarety) {
     name = newName;
     year = newYear;
     rarety = newRarety;
+    System.out.println("CollectibleItem constructor - name, year, rarety");
   }
 
   public String getName() {
