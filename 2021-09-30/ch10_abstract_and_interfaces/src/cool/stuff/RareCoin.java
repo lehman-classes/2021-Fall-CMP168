@@ -4,9 +4,9 @@ public class RareCoin extends CollectibleItem {
 
   private int amountOfRidges;
 
-  public RareCoin() {
-    System.out.println("Rare Coin constructor");
-  }
+  // public RareCoin() {
+  // System.out.println("Rare Coin constructor");
+  // }
 
   /**
    * Constructors

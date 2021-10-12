@@ -14,8 +14,12 @@ public class App {
      */
 
     Renter renter = new Renter();
-    Vehicle vehicle = new Compact();
+    Compact vehicle = new Compact();
+
     renter.checkin(vehicle);
+
+    boolean isIt = renter.compareTo(vehicle);
+    System.out.println(isIt);
 
   }
 }

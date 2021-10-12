@@ -15,4 +15,10 @@ public class Sedan implements Vehicle {
     return "sedan garage";
   }
 
+  @Override
+  public boolean equals(Vehicle vehicle) {
+
+    return vehicle.location().equals(this.location());
+  }
+
 }

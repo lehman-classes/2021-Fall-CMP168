@@ -9,7 +9,7 @@ public class App {
     int year = 1904;
     int rareValue = 9;
 
-    RareCoin rc = new RareCoin(name, year, rareValue);
+    RareCoin rc = new GoldCoin(name, year, rareValue);
 
     System.out.println(rc.getName());
 

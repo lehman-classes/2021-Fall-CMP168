@@ -7,9 +7,9 @@ public abstract class CollectibleItem {
   protected int year;
   protected int rarety;
 
-  public CollectibleItem() {
-    System.out.println("CollectibleItem constructor");
-  }
+  // public CollectibleItem() {
+  // System.out.println("CollectibleItem constructor");
+  // }
 
   public CollectibleItem(String newName, int newYear, int newRarety) {
     name = newName;
