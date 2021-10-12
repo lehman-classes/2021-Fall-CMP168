@@ -18,7 +18,8 @@ public class App {
 
     renter.checkin(vehicle);
 
-    boolean isIt = renter.compareTo(vehicle);
+    int isIt = renter.compareTo(vehicle);
+
     System.out.println(isIt);
 
   }
