@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class App {
@@ -6,7 +7,10 @@ public class App {
 
     // [0,]
 
+    ArrayList al = new ArrayList<>();
+
     int[][] numbers = new int[5][5];
+
     Random r = new Random();
     // int[] row0 = new int[5];
     // int[] row1 = new int[2];
