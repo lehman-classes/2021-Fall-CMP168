@@ -1,161 +1,177 @@
+import java.util.Arrays;
+import java.util.Objects;
 
-public class Student extends Person {
-	private static int numStudents;
-	private int studentID;
-	private Course[] coursesTaken;
-	private int numCoursesTaken = 0;
-	private boolean isGraduate;
-	private String major;
-
-	public Student() {
-		super();
-		numStudents++;
-		this.studentID = numStudents;
-		this.coursesTaken = new Course[50];
-		this.isGraduate = false;
-		this.numCoursesTaken = 0;
-		this.major = "undeclared";
-	}
-
-	public Student(boolean isGraduate) {
-		super();
-		this.isGraduate = isGraduate;
-		numStudents++;
-		this.studentID = numStudents;
-		this.coursesTaken = new Course[50];
-		this.major = "undeclared";
-		this.numCoursesTaken = 0;
-	}
-
-	public Student(String major, boolean isGraduate) {
-		this.major = major;
-		this.isGraduate = isGraduate;
-		numStudents++;
-		this.studentID = numStudents;
-		this.coursesTaken = new Course[50];
-		this.numCoursesTaken = 0;
-	}
-
-	public Student(String name, int birthYear, String major, boolean isGraduate) {
-		super(name, birthYear);
-		this.major = major;
-		this.isGraduate = isGraduate;
-		numStudents++;
-		this.studentID = numStudents;
-		this.coursesTaken = new Course[50];
-		this.numCoursesTaken = 0;
-	}
-
-	public boolean isGraduate() {
-		return isGraduate;
-	}
-
-	public void setGraduate(boolean isGraduate) {
-		this.isGraduate = isGraduate;
-	}
-
-	public String getMajor() {
-		return major;
-	}
-
-	public void setMajor(String major) {
-		this.major = major;
-	}
-
-	public static int getNumStudents() {
-		return numStudents;
-	}
-
-	public int getStudentID() {
-		return studentID;
-	}
-
-	public int getNumCoursesTaken() {
-		return this.numCoursesTaken;
-	}
-public static int getStudentCredits(Student s) {
-		
-		int credits = 0;
-		for (int i = 0; i < s.getNumCoursesTaken(); i++) {
-			credits += s.coursesTaken[i].getNumCredits();
-		}
-
-		return credits;
-	}
+public class Student extends Person implements Comparable<Person> {
 
 
+    public Student() {
+        super();
+        this.coursesTaken = new Course[50];
+        this.numCoursesTaken = 0;
+        this.isGraduate = false;
+        this.major = "undeclared";
+        numStudents++;
+        this.studentID = numStudents;
+    }
 
-	public void addCourseTaken(Course course) {
-		if(numCoursesTaken < 50)
-		coursesTaken[numCoursesTaken] = course;
-		numCoursesTaken++;
-	}
+    public Student(boolean isGraduate) {
+        super();
 
-	public void addCoursesTaken(Course[] courses) {
-		if(numCoursesTaken + courses.length <= 50)
-		for (int i = 0; i < courses.length; i++) {
-			addCourseTaken(courses[i]);
-		}
-	}
+        this.coursesTaken = new Course[50];
+        this.numCoursesTaken = 0;
+        this.isGraduate = isGraduate;
+        this.major = "undeclared";
+        numStudents++;
+        this.studentID = numStudents;
+    }
 
-	public Course getCourseTaken(int index) {
-		return coursesTaken[index];
-	}
+    Student(String major, boolean isGraduate) {
+        super();
 
-	public String getCourseTakenAsString(int index) {
-		if ((index >= numCoursesTaken) || (index < 0)) {
-			return "";
-		} else {
+        this.coursesTaken = new Course[50];
+        this.numCoursesTaken = 0;
+        this.isGraduate = isGraduate;
+        this.major = major;
+        numStudents++;
+        this.studentID = numStudents;
+    }
 
-			return coursesTaken[index].getCourseDept() + "-" + coursesTaken[index].getCourseNum();
-		}
-	}
+    Student(String name, int birthYear, String major, boolean isGraduate) {
+        super(name, birthYear);
+        this.coursesTaken = new Course[50];
+        this.numCoursesTaken = 0;
+        this.isGraduate = isGraduate;
+        this.major = major;
+        numStudents++;
+        this.studentID = numStudents;
+    }
 
-	public String getAllCoursesTakenAsString() {
-		String s = "";
-		for (int i = 0; i < numCoursesTaken; i++) {
-			s += getCourseTakenAsString(i);
-		}
-		return s;
-	}
+    public boolean isGraduate() {
+        return isGraduate;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Student) {
-			Student objS = (Student) obj;
-			return super.equals(objS) && this.isGraduate == objS.isGraduate && this.studentID == objS.studentID
-					&& this.major.equals(objS.major) && this.numCoursesTaken == objS.numCoursesTaken;
-		}
-		return false;
-	}
+    public int getNumCoursesTaken() {
+        return numCoursesTaken;
+    }
 
-	@Override
-	public String toString() {
-		String grad = "";
-		if (isGraduate) {
-			grad += "Graduate";
-		} else {
-			grad += "Undergraduate";
-		}
-		return super.toString() + String.format(
-				" Student: studentID: %04d | Major %20s | %14s | Number of Courses Taken: %3d | Courses Taken: %s",
-				studentID, major, grad, this.numCoursesTaken, getAllCoursesTakenAsString());
-	}
+    public static int getNumStudents() {
+        return numStudents;
+    }
 
-	@Override
-	public int compareTo(Person p) {
-		if(p instanceof Student) {
-			Student other = (Student)p;
-			if(getStudentCredits(this) > getStudentCredits(other)) {
-				return 1;
-			}
-			else if(getStudentCredits(this) < getStudentCredits(other)) {
-				return -1;
-			}
-		}
-		return 0;
-	}
+    public int getStudentID() {
+        return studentID;
+    }
 
-	
+    public String getMajor() {
+        return major;
+    }
 
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public void addCourseTaken(Course course) {
+        if (numCoursesTaken < 50) {
+            if(course != null) {
+                coursesTaken[numCoursesTaken] = course;
+                numCoursesTaken++;
+            }
+        }
+    }
+
+    public void addCoursesTaken(Course[] course) {
+            for (int i = 0; i < course.length; i++){
+                if(numCoursesTaken < 50){
+                if(course[i] != null) {
+                    coursesTaken[numCoursesTaken] = course[i];
+                    numCoursesTaken++;
+                }
+            }
+        }
+    }
+
+    public Course getCourseTaken(int index) {
+        if ((index >= coursesTaken.length) || index < 0) {
+            return null;
+        } if (coursesTaken[index] == null) {
+            return null;
+        }
+        return coursesTaken[index];
+    }
+
+    public String getCourseTakenAsString(int index) {
+        if(index < 0 ||(index >= coursesTaken.length)) {
+            return "courseDept-courseNum";
+        }
+        if(coursesTaken[index] == null) {
+            return "courseDept-courseNum";
+        }
+        return getCourseTaken(index).toString();
+    }
+
+    public String getAllCoursesTakenAsString() {
+        StringBuilder s = new StringBuilder();
+
+        for (int i = 0; i < numCoursesTaken; i++) {
+            s.append(getCourseTakenAsString(i));
+        }
+        return s.toString();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        if (!super.equals(o)) return false;
+        Student student = (Student) o;
+        return studentID == student.studentID && isGraduate == student.isGraduate &&
+                numCoursesTaken == student.numCoursesTaken && Arrays.equals(coursesTaken, student.coursesTaken)
+                && Objects.equals(major, student.major);
+    }
+
+    public int coursesCreditAdder() {
+        int cout = 0;
+        for (int i = 0; i < numCoursesTaken; i++) {
+            if (coursesTaken[i] != null) {
+                cout += coursesTaken[i].getNumCredits();
+            }
+        }
+        return cout;
+    }
+
+    @Override
+    public String toString() {
+        String graduate = "Graduate";
+        String isUndergrad = "Undergraduate";
+        if (isGraduate) {
+            return String.format(super.toString() + " Student: studentID: %04d | " +
+                            "Major %20s | %14s | Number of Courses Taken: %3d | Courses Taken: %s",
+                    studentID, major, graduate , numCoursesTaken, getAllCoursesTakenAsString());
+        } else return String.format(super.toString() + " Student: studentID: %04d | " +
+                        "Major %20s | %14s | Number of Courses Taken: %3d | Courses Taken: %s",
+                studentID, major, isUndergrad, numCoursesTaken, getAllCoursesTakenAsString());
+    }
+
+    @Override
+    public int compareTo(Person person) {
+
+        if (this.coursesCreditAdder() == ((Student) person).coursesCreditAdder()) {
+            return 0;
+        }
+        else if (this.coursesCreditAdder() < ((Student) person).coursesCreditAdder()) {
+            return -1;
+        }
+        else
+            return 1;
+    }
+
+
+    private static int numStudents = 0;
+    private int studentID;
+    private Course coursesTaken[];
+    private boolean isGraduate;
+    private String major;
+    private int numCoursesTaken;
+    
 }

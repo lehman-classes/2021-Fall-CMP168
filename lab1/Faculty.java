@@ -1,123 +1,131 @@
+import java.util.Arrays;
+public class Faculty extends Employee implements Comparable<Person> {
 
-public class Faculty extends Employee {
+    public Faculty() {
+        super();
+        this.coursesTaught = new Course[100];
+        this.numCoursesTaught = 0;
+        this.isTenured = false;
+    }
 
-	private Course[] coursesTaught;
-	private int numCoursesTaught;
-	private boolean isTenured;
+    public Faculty(boolean isTenured) {
+        super();
+        this.isTenured = isTenured;
+        this.coursesTaught = new Course[100];
+        this.numCoursesTaught = 0;
+    }
 
-	public Faculty() {
-		super();
-		coursesTaught = new Course[100];
-		numCoursesTaught = 0;
-		isTenured = false;
-	}
+    Faculty(String deptName, boolean isTenured) {
+        super(deptName);
+        this.isTenured = isTenured;
+        this.coursesTaught = new Course[100];
+    }
 
-	public Faculty(boolean tenure) {
-		super();
-		coursesTaught = new Course[100];
-		numCoursesTaught = 0;
-		this.isTenured = tenure;
-	}
+    Faculty(String name, int birthYear, String deptName, boolean isTenured) {
+        super(name, birthYear, deptName);
+        this.isTenured = isTenured;
+        this.coursesTaught = new Course[100];
+    }
 
-	public Faculty(String dept, boolean tenure) {
-		super(dept);
-		this.isTenured = tenure;
-		coursesTaught = new Course[100];
-		numCoursesTaught = 0;
-	}
+    public void setTenured(boolean isTenured) {
+        this.isTenured = isTenured;
+    }
 
-	public Faculty(String name, int birth, String dept, boolean tenure) {
-		super(name, birth, dept);
-		this.isTenured = tenure;
-		coursesTaught = new Course[100];
-		numCoursesTaught = 0;
-	}
+    public boolean isTenured() {
+        return isTenured;
+    }
 
-	public boolean isTenured() {
-		return this.isTenured;
-	}
+    public void addCourseTaught(Course course) {
+        if (numCoursesTaught < 100) {
+            if(course != null) {
+                coursesTaught[numCoursesTaught] = course;
+                numCoursesTaught++;
+            }
+        }
+    }
 
-	public int getNumCoursesTaught() {
-		return this.numCoursesTaught;
-	}
+    public void addCoursesTaught(Course[] course) {
+        for(int i = 0; i < course.length; i++){
+            if (numCoursesTaught < 100) {
+                if (course[i] != null) {
+                    coursesTaught[numCoursesTaught] = course[i];
+                    numCoursesTaught++;
+                }
+            }
+        }
+    }
 
-	public void setIsTenured(boolean tenure) {
-		this.isTenured = tenure;
-	}
+    public int getNumCoursesTaught() {
+        return this.numCoursesTaught;
+    }
 
-	public void addCourseTaught(Course course) {
-		if (this.getNumCoursesTaught() < this.coursesTaught.length) {
-			coursesTaught[numCoursesTaught] = course;
-			numCoursesTaught++;
-		}
-	}
+    public Course getCourseTaught(int index) {
+        if ((index >= coursesTaught.length) || index < 0 ) {
+            return null;
+        } else if(coursesTaught[index] == null){
+            return null;
+        }
+        return coursesTaught[index];
+    }
 
-	public void addCoursesTaught(Course[] course) {
-		for (int i = 0; numCoursesTaught < course.length; i++) {
-			coursesTaught[numCoursesTaught] = course[i];
-			numCoursesTaught++;
-		}
-	}
+    public String getCourseTaughtAsString(int index) {
 
-	public Course getCourseTaught(int index) {
-		if ((index < 0) || (index > numCoursesTaught - 1)) {
-			return null;
-		}
-		return coursesTaught[index];
-	}
+            return getCourseTaught(index).toString();
+    }
 
-	public String getCourseTaughtAsString(int index) {
-		if ((index < 0) || (index > numCoursesTaught - 1)) {
-			return "";
-		}
-		return coursesTaught[index].getCourseDept() + "-" + coursesTaught[index].getCourseNum();
-	}
 
-	public String getAllCoursesTaughtAsString() {
-		String output = "";
-		for (int i = 0; i < numCoursesTaught; i++) {
-			output += getCourseTaughtAsString(i);
-		}
-		return output;
-	}
+    public String getAllCoursesTaughtAsString() {
+        StringBuilder s = new StringBuilder();
 
-	public boolean equals(Object obj) {
-		if (obj instanceof Faculty) {
-			Faculty objFac = (Faculty) obj;
-			return this.getDeptName().contentEquals(objFac.getDeptName())
-					&& (this.getEmployeeID() == objFac.getEmployeeID())
-					&& (this.getAllCoursesTaughtAsString().contentEquals(objFac.getAllCoursesTaughtAsString()))
-					&& (this.getNumCoursesTaught() == objFac.getNumCoursesTaught())
-					&& (this.isTenured() == objFac.isTenured);
-		}
-		return false;
-	}
+        for (int i = 0; i < numCoursesTaught; i++) {
+            s.append(getCourseTaughtAsString(i));
+        }
+        return s.toString();
+    }
 
-	@Override
-	public String toString() {
-		String tenure = "";
-		if (isTenured) {
-			tenure += "Is Tenured";
-		} else {
-			tenure += "Not Tenured";
-		}
-		return String.format("%s Faculty: %11s | Number of Courses Taught: %3d | Courses Taught: %s", super.toString(),
-				tenure, numCoursesTaught, getAllCoursesTaughtAsString());
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Faculty)) return false;
+        if (!super.equals(o)) return false;
+        Faculty faculty = (Faculty) o;
+        return numCoursesTaught == faculty.numCoursesTaught && isTenured == faculty.isTenured &&
+                Arrays.equals(coursesTaught, faculty.coursesTaught);
+    }
 
-	@Override
-	public int compareTo(Person p) {
-		if (p instanceof Faculty) {
-			Faculty objFac = (Faculty) p;
-			if (this.getNumCoursesTaught() > objFac.getNumCoursesTaught()) {
-				return 1;
-			}
-			if (this.getNumCoursesTaught() < objFac.getNumCoursesTaught()) {
-				return -1;
-			}
-		} else {
-			return super.compareTo(p);
-		}
-		return 0;
-	}
+    @Override
+    public String toString(){
+        String IsTenured = "Is Tenured";
+        String NotTenured = "Not Tenured";
+        if(isTenured)
+        return String.format(super.toString() + " Faculty: %11s | Number of Courses Taught: %3d | " +
+                "Courses Taught: %s",IsTenured, numCoursesTaught, getAllCoursesTaughtAsString());
+        else return String.format(super.toString() + " Faculty: %11s | Number of Courses Taught: %3d | " +
+                "Courses Taught: %s",NotTenured, numCoursesTaught, getAllCoursesTaughtAsString());
+
+    }
+
+
+    @Override
+    public int compareTo(Person person) {
+        Faculty faculty = (Faculty) person;
+        if (this.getNumCoursesTaught() == ((Faculty) person).getNumCoursesTaught()) {
+            return 0;
+        }
+        else if (this.getNumCoursesTaught() < ((Faculty) person).getNumCoursesTaught()) {
+            return -1;
+        }
+        else
+            return 1;
+    }
+
+
+
+
+
+
+    private Course [] coursesTaught;
+    private int numCoursesTaught;
+    private boolean isTenured;
+
 }

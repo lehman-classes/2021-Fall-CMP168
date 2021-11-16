@@ -1,63 +1,65 @@
+import java.util.Objects;
+public class Person implements Comparable<Person>{
+
+    public Person() {
+        this.name = "";
+        this.birthYear = 0;
+    }
+
+    public Person(String name, int birthYear) {
+        this.name = name;
+        this.birthYear = birthYear;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setBirthYear(int birthYear) {
+        if(birthYear >= 0)
+        this.birthYear = birthYear;
+        else birthYear = 0;
+    }
+
+    public int getBirthYear() {
+        return birthYear;
+    }
 
 
 
-public class Person implements Comparable<Person> {
-	private String name;
-	private int birthYear;
-	
-	public Person() {
-		this.name="";
-		this.birthYear=0;
-	}
-	
-	public Person(String n, int b) {
-		this.name=n;
-		this.birthYear=b;
-	}
+    @Override
+    public String toString() {
+        return String.format("Person: Name: %30s | Birth Year: %4d",getName(),getBirthYear());
+    }
 
-	public String getName() {
-		return name;
-	}
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if(!(object instanceof Person)) return false;
+        Person person = (Person) object;
+        return birthYear == person.birthYear && Objects.equals(name, person.name);
+    }
+    @Override
+    public int compareTo(Person p) {
+        if (this.birthYear == p.birthYear) {
+            return 0;
+        }
+        else if (this.birthYear < p.birthYear) {
+            return -1;
+        }
+         else
+             return 1;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
-	public int getBirthYear() {
-		return birthYear;
-	}
 
-	public void setBirthYear(int birthYear) {
-		this.birthYear = birthYear;
-	}
-	
-	@Override
-	public boolean equals(Object o) {
-		if(o instanceof Person) {
-			Person oPers = (Person) o;
-			return this.name==oPers.getName() && this.birthYear==oPers.getBirthYear();
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public String toString() {
-		String s = String.format("Person: Name: %30s | Birth Year: %4d", name, birthYear);
-		return s;
-	}
-	
-	public int compareTo(Person p) {
-		//TODO might be the other way around
-		if(this.birthYear > p.getBirthYear()) {
-			return 1;
-		}
-		else if(this.birthYear < p.getBirthYear()) {
-			return -1;
-		}
-		else {
-			return 0;
-		}
-	}
+    private String name;
+    private int birthYear;
+
+
+
 }
-

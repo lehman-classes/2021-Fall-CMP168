@@ -1,237 +1,614 @@
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Scanner;
-
+/*https://www.youtube.com/watch?v=uXLnBdzWEPg*/
+import java.io.*;
+import java.util.*;
 public class Driver_SchoolDB {
-	
+    public static ArrayList<Course> allCourses = new ArrayList<>();
+    public static ArrayList<GeneralStaff> allGeneralStaff = new ArrayList<>();
+    public static ArrayList<Student> allStudents = new ArrayList<>();
+    public static ArrayList<Faculty> allFaculties = new ArrayList<>();
 
-	public static void construct_object(String fName, Course[] courses, Student[] students, Faculty[] faculty,
-			GeneralStaff[] generalstaffs) throws IOException {
+    public static void menu() {
+        Scanner scanner = new Scanner(System.in);
+        int userInput;
+        do {
+            System.out.println(
+                    "Press 1 to create 3 new Course's\n"+
+                    "Press 2 to create 3 new Faculty member's\n" +
+                    "Press 3 to create 3 new GeneralStaff member's\n" +
+                    "Press 4 to create 3 new Student member's\n" +
+                            "Press 0 to Enter Submenu");
 
-		String fileName = fName;
-		BufferedReader filereader = null;
+            userInput = scanner.nextInt();
 
-		String line = "";
-		boolean first_count = true;
-		int course_c = 0, student_c = 0, faculty_c = 0, general_c = 0;
-		try {
-			filereader = new BufferedReader(new FileReader(fileName));
+                switch (userInput) {
 
-			while ((line = filereader.readLine()) != null) {
-				String[] l1 = line.split(":");
-				// System.out.println(l1.length);
-				if (l1.length == 1) {
-					if (l1[0].equals("Faculty")) {
-						Faculty f1 = new Faculty();
-						faculty[faculty_c++] = f1;
-						// System.out.println(f1.toString());
-					}
-					if (l1[0].equals("GeneralStaff")) {
-						GeneralStaff gs1 = new GeneralStaff();
-						generalstaffs[general_c++] = gs1;
-						// System.out.println(gs1.toString());
-					}
-					if (l1[0].equals("Student")) {
-						Student s1 = new Student();
-						students[student_c++] = s1;
-						// System.out.println(s1);
-					}
-				}
-				if (l1.length == 2) {
+                    case 1:
+                        System.out.println("Going to Course Menu");
+                        courseCreation();
+                        break;
 
-					String[] l2 = l1[1].split(",");
-					// System.out.println(l2.length);
-					if (l1[0].equals("Course") && l2.length == 4 && first_count) // using count differ the first
-					{
-						first_count = false;
-						l2[0] = l2[0].trim(); // 1st one with space
-						Boolean val11 = Boolean.parseBoolean(l2[0]);
-						l2[1] = l2[1].trim();
-						int val22 = Integer.parseInt(l2[1]);
-						l2[2] = l2[2].trim();
-						String val33 = l2[2];
-						l2[3] = l2[3].trim();
-						int val44 = Integer.parseInt(l2[3]);
+                    case 2:
+                        System.out.println("Going to Faculty Menu");
+                        facultyCreation();
+                        break;
+                    case 3:
+                        System.out.println("Going to GeneralStaff Menu");
+                        generalStaffCreation();
+                        break;
 
-						Course c1 = new Course(val11, val22, val33, val44);
-						courses[course_c++] = c1;
-						// System.out.println(c1.toString());
+                    case 4:
+                        System.out.println("Going to Student Menu");
+                        studentCreation();
+                        break;
+                    default:
+                }
+        } while (userInput != 0);
+    }
 
-					}
+    public static void courseCreation()  {
+        Scanner scanner = new Scanner(System.in);
 
-					else if (l1[0].equals("Course") && l2.length == 4 && !first_count) {
-						l2[0] = l2[0].trim(); // 1st one with space
-						Boolean val1 = Boolean.parseBoolean(l2[0]);
-						int val2 = Integer.parseInt(l2[1]);
-						String val3 = l2[2];
-						int val4 = Integer.parseInt(l2[3]);
+        System.out.println("Create new course.");
+        while (true) {
+            System.out.println("Please enter: \"True\" or  \"False\"");
+            try {
+                boolean isGraduateCourse = scanner.nextBoolean();
+                System.out.println("Please enter the Course Number");
+                int courseNumber = scanner.nextInt();
+                System.out.println("Please enter Course Department");
+                String courseDepartment = scanner.next();
+                System.out.println("Please enter number of Credits");
+                int numberOfCredits = scanner.nextInt();
 
-						Course c2 = new Course(val1, val2, val3, val4);
-						courses[course_c++] = c2;
-						// System.out.println(c2.toString());
 
-					}
+                Course course = new Course(isGraduateCourse, courseNumber, courseDepartment, numberOfCredits);
 
-					if (l1[0].equals("Faculty") && l2.length == 1) {
-						String f2val = l2[0].trim();
-						Boolean b = Boolean.parseBoolean(f2val);
-						Faculty f2 = new Faculty(b);
-						// System.out.println(f2.toString());
-						faculty[faculty_c++] = f2;
-					}
-					if (l1[0].equals("Faculty") && l2.length == 2) {
-						l2[0] = l2[0].trim();
-						String deptN = l2[0];
-						Boolean bt = Boolean.parseBoolean(l2[1]);
-						Faculty f3 = new Faculty(deptN, bt);
-						// System.out.println(f3.toString());
-						faculty[faculty_c++] = f3;
-					}
-					if (l1[0].equals("Faculty") && l2.length == 4) {
-						String fvv5 = l2[0].trim();
-						int yr = Integer.parseInt(l2[1]);
-						String dpt = l2[2];
-						Boolean v = Boolean.parseBoolean(l2[3]);
-						Faculty f4 = new Faculty(fvv5, yr, dpt, v);
-						// System.out.println(f4.toString());
-						faculty[faculty_c++] = f4;
 
-					}
+                allCourses.add(course);
 
-					if (l1[0].equals("GeneralStaff") && l2.length == 1) {
-						String gst2 = l2[0].trim(); // duty
-						GeneralStaff gs2 = new GeneralStaff(gst2);
-						// System.out.println(gs2.toString());
-						generalstaffs[general_c++] = gs2;
 
-					}
+            } catch (Exception e) {
+                System.out.println("Something went wrong.");
+                scanner.next();
+            }
 
-					if (l1[0].equals("GeneralStaff") && l2.length == 2) {
-						String gen_deptn = l2[0].trim();
-						String gen_duty = l2[1];
-						GeneralStaff gs3 = new GeneralStaff(gen_deptn, gen_duty);
-						// System.out.println(gs3.toString());
-						generalstaffs[general_c++] = gs3;
-					}
-					if (l1[0].equals("GeneralStaff") && l2.length == 4) {
-						String gen_name = l2[0].trim();
-						int gen_byr = Integer.parseInt(l2[1]);
-						String gen4_deptn = l2[2];
-						String gen4_duty = l2[3];
-						GeneralStaff gs4 = new GeneralStaff(gen_name, gen_byr, gen4_deptn, gen4_duty);
-						// System.out.println(gs4.toString());
-						generalstaffs[general_c++] = gs4;
-					}
-					if (l1[0].equals("Student") && l2.length == 1) {
-						l2[0] = l2[0].trim();
-						Boolean isG = Boolean.parseBoolean(l2[0]);
-						Student s2 = new Student(isG);
-						// System.out.println(s2.toString());
-						students[student_c++] = s2;
-					}
-					if (l1[0].equals("Student") && l2.length == 2) {
-						String dept_s = l2[0].trim();
-						Boolean isg2 = Boolean.parseBoolean(l2[1]);
-						Student s3 = new Student(dept_s, isg2);
-						// System.out.println(s3.toString());
-						students[student_c++] = s3;
-					}
-					if (l1[0].equals("Student") && l2.length == 4) {
-						String name_s2 = l2[0].trim();
-						int yr_s = Integer.parseInt(l2[1]);
-						String dept_s2 = l2[2];
-						Boolean isg3 = Boolean.parseBoolean(l2[3]);
+            System.out.println("Would you like to continue? " +
+                    "Press 1 for yes or any other number to return to the Main Menu");
+            String choice = scanner.next();
+            if(!choice.equals( "1")){
+                break;
+            }
+        }
+    }
+    public static Course courseCreation(Faculty faculty) {
+        Scanner scanner = new Scanner(System.in);
 
-						Student s4 = new Student(name_s2, yr_s, dept_s2, isg3);
-						// System.out.println(s4.toString());
-						students[student_c++] = s4;
-					}
 
-				}
+        System.out.println("Create new course.");
 
-			}
+        System.out.println("Please enter: \"True\" or  \"False\"");
+        try {
+            boolean isGraduateCourse = scanner.nextBoolean();
+            System.out.println("Please enter the Course Number");
+            int courseNumber = scanner.nextInt();
+            System.out.println("Please enter Course Department");
+            String courseDepartment = scanner.next();
+            System.out.println("Please enter number of Credits");
+            int numberOfCredits = scanner.nextInt();
 
-		} catch (Exception excp) {
-			excp.printStackTrace();
-		}
 
-		System.out.println("COURSES:");
-		for (int i = 0; i < course_c; i++) {
-			System.out.println(courses[i].toString());
-		}
-		System.out.println("************************************************");
-		System.out.println("************************************************");
-		System.out.println("PERSONS:");
-		System.out.println("************************************************");
-		System.out.println("************************************************");
-		System.out.println("EMPLOYEES:");
-		System.out.println("************************************************");
-		System.out.println("************************************************");
-		System.out.println("GENERAL STAFF:");
-		for (int k = 0; k < general_c; k++) {
-			System.out.println(generalstaffs[k].toString());
-		}
-		System.out.println("************************************************");
-		System.out.println("************************************************");
-		System.out.println("FACULTY:");
-		for (int j = 0; j < faculty_c; j++) {
-			System.out.println(faculty[j].toString());
-		}
-		System.out.println("************************************************");
-		System.out.println("************************************************");
-		System.out.println("STUDENTS:");
-		for (int k = 0; k < student_c; k++) {
-			System.out.println(students[k].toString());
-		}
-		System.out.println("************************************************");
-		System.out.println("**************************************************************\n");
+            Course course = new Course(isGraduateCourse, courseNumber, courseDepartment, numberOfCredits);
 
-	}
 
-	public static void main(String[] args) {
-		String fileName = "SchoolDB_Initial.txt";
-		Scanner inStream = null;
-		Course[] courses = new Course[9];
-		Student[] students = new Student[7];
-		Faculty[] faculty = new Faculty[7];
-		GeneralStaff[] generalstaffs = new GeneralStaff[7];
+            allCourses.add(course);
+            return course;
 
-		try {
-			File file = new File(fileName);
-			if (file.exists() && file.canRead()) {
-				inStream = new Scanner(file);
 
-				while (inStream.hasNextLine()) {
-					String theLine = inStream.nextLine();
-					System.out.println(theLine);
+        } catch (Exception e) {
+            System.out.println("Something went wrong.");
+            scanner.next();
+            return null;
+        }
+    }
+    public static Course courseCreation(Student student) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Create new course.");
 
-				}
-				System.out.println();
-			}
-		} catch (FileNotFoundException e) {
-			System.err.println("Cannot read from file " + fileName);
-			e.printStackTrace();
-		} finally {
-			if (inStream != null) {
-				inStream.close();
-				System.out.println("**************************************************************");
-			}
-		}
+        System.out.println("Please enter: \"True\" or  \"False\"");
+        try {
+            boolean isGraduateCourse = scanner.nextBoolean();
+            System.out.println("Please enter the Course Number");
+            int courseNumber = scanner.nextInt();
+            System.out.println("Please enter Course Department");
+            String courseDepartment = scanner.next();
+            System.out.println("Please enter number of Credits");
+            int numberOfCredits = scanner.nextInt();
 
-		System.out.println("SCHOOL DATABASE INFO:\n");
-		System.out.println("************************************************");
-		try {
-			construct_object(fileName, courses, students, faculty, generalstaffs);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("An exception " + e.getMessage());
-		}
-	}
+
+            Course course = new Course(isGraduateCourse, courseNumber, courseDepartment, numberOfCredits);
+
+
+            allCourses.add(course);
+            return course;
+
+
+        } catch (Exception e) {
+            System.out.println("Something went wrong.");
+            scanner.next();
+            return null;
+        }
+    }
+
+    public static void facultyCreation() {
+        Scanner scanner = new Scanner(System.in);
+        String facultyName = "";
+        int yearBirth = 0;
+        while(allFaculties.size()< 3){
+            try {
+                System.out.printf("Must format Faculty one of these three ways: " +
+                        "Example:\nFaculty: true\nFaculty: MAT,false\nFaculty: Superman,1938,PHY,true%n");
+
+                String s = scanner.nextLine();
+                String[] arr = s.split("\\W+");
+                StringBuilder stringBuilder = new StringBuilder();
+
+                for (int i = 0; i < arr.length; i++) {
+                    for (char c : arr[i].toCharArray()) {
+                        if (Character.isDigit(c)) {
+                            stringBuilder.append(c);
+                            yearBirth = Integer.parseInt(stringBuilder.toString());
+                        }
+                    }
+                    if (isBoolean(arr[i])) {
+                        String temp = arr[arr.length - 1];
+                        arr[arr.length - 1] = arr[i];
+                        arr[i] = temp;
+                    }
+                }
+                if (arr.length == 4) {
+                    try {
+                        Faculty faculty= new Faculty(arr[0], yearBirth,
+                                facultyName, Boolean.parseBoolean(arr[arr.length - 1]));
+                        allFaculties.add(faculty);
+                        System.out.println(faculty);
+                    } catch (InputMismatchException e) {
+                       facultyCreation();
+                    }
+
+                } else if (arr.length == 2) {
+                    Faculty faculty = new Faculty(facultyName, Boolean.parseBoolean(arr[arr.length - 1]));
+                    allFaculties.add(faculty);
+                    System.out.println(faculty);
+                } else if (arr.length == 1) {
+                    if (isBoolean(arr[0])) {
+                        try {
+                            Faculty faculty = new Faculty(Boolean.parseBoolean(arr[0]));
+                            allFaculties.add(faculty);
+                            System.out.println(faculty);
+                        } catch (InputMismatchException e) {
+                            facultyCreation();
+                        }
+                    }
+                }
+            }catch (Exception e){
+                System.out.println("Something went wrong");
+            }
+        }
+        if(allFaculties.size()>=3) {
+            System.out.println("Maximum number of courses you can add has been reached. Returning to Main Menu");
+        }
+    }public static void generalStaffCreation() {
+        Scanner scanner = new Scanner(System.in);
+        String Duty;
+        String Department;
+
+        System.out.println("Please enter Department");
+        Department = scanner.nextLine();
+        System.out.println("Please enter Duty");
+        Duty = scanner.nextLine();
+        GeneralStaff generalStaff = new GeneralStaff(Department,Duty);
+        allGeneralStaff.add(generalStaff);
+
+    }
+
+    public static void studentCreation(){Scanner scanner = new Scanner(System.in);
+        String course = "";
+        int yearBirth = 0;
+        while(allStudents.size()< 3){
+            try {
+                System.out.printf("Must format Student one of these three ways: " +
+                        "Example:\nStudent: true\nStudent: MAT,false\nStudent: Superman,1938,PHY,true%n");
+
+                String s = scanner.nextLine();
+                String[] arr = s.split("\\W+");
+                StringBuilder stringBuilder = new StringBuilder();
+
+                for (int i = 0; i < arr.length; i++) {
+                    for (char c : arr[i].toCharArray()) {
+                        if (Character.isDigit(c)) {
+                            stringBuilder.append(c);
+                            yearBirth = Integer.parseInt(stringBuilder.toString());
+                        }
+                    }
+                    if (isBoolean(arr[i])) {
+                        String temp = arr[arr.length - 1];
+                        arr[arr.length - 1] = arr[i];
+                        arr[i] = temp;
+                    }
+                    if (arr[i].length() == 3) {
+                        course = arr[i];
+                    }
+                }
+                if (arr.length == 4) {
+                    try {
+                        Student student = new Student(arr[0], yearBirth, course,
+                                Boolean.parseBoolean(arr[arr.length - 1]));
+                        allStudents.add(student);
+                        System.out.println(student);
+                    } catch (InputMismatchException e) {
+                        studentCreation();
+                    }
+
+                } else if (arr.length == 2) {
+                    Student student = new Student(course, Boolean.parseBoolean(arr[arr.length - 1]));
+                    allStudents.add(student);
+                    System.out.println(student);
+                } else if (arr.length == 1) {
+                    if (isBoolean(arr[0])) {
+                        try {
+                            Student student = new Student(Boolean.parseBoolean(arr[0]));
+                            allStudents.add(student);
+                            System.out.println(student);
+                        } catch (InputMismatchException e) {
+                            studentCreation();
+                        }
+                    }
+                }
+            }catch (Exception e){
+                System.out.println("Something went wrong");
+            }
+        }
+        if(allStudents.size()>=3) {
+            System.out.println("Maximum number of courses you can add has been reached. Returning to Main Menu");
+        }
+    }
+
+
+    public static void subMenu() {
+        Scanner scanner = new Scanner(System.in);
+        int userInput;
+
+      try {
+          do {
+              System.out.println("Welcome to the sub- Menu\n" +
+                      "Press 0 To exit\n" +
+                      "Press 1 To Access And Edit Faculty(s)\n" +
+                      "Press 2 To Access And Edit Student(s)\n" +
+                      "Press 3 To determine which course has the least course number " +
+                      "and which course is the largest. ");
+              userInput = scanner.nextInt();
+              switch (userInput) {
+                  case 1:
+                      System.out.println("Faculty member");
+                      setAllFaculties();
+                      break;
+                  case 2:
+                      System.out.println("Edit Student ");
+                      setAllStudents();
+                      break;
+                  case 3:
+                      Collections.sort(allCourses);
+                      System.out.println(allCourses.get(0).getCourseName() + " is the smallest course in the catalog.");
+                      System.out.println(allCourses.get(allCourses.size()-1).getCourseName() +
+                              " is the largest course in the catalog.");
+
+              }
+          } while (userInput != 0);
+      }catch (InputMismatchException e){
+          System.out.println("Error returning to Sub-Menu");
+          subMenu();
+
+      } catch (ArrayIndexOutOfBoundsException e){
+          System.out.println("Something went wrong. Returning to Sub-Menu");
+          subMenu();
+      }catch (IndexOutOfBoundsException e){
+          System.out.println("That's not right. Returning to Sub-Menu");
+          subMenu();
+      } catch (NullPointerException nullPointerException){
+          System.out.println("That was unexpected. Returning to Sub-Menu");
+          subMenu();
+      }
+
+    }
+    public static void setAllFaculties() {
+        Scanner scanner = new Scanner(System.in);
+        String isq = "l";
+        int userInput2;
+
+        do{
+            System.out.println("Type 0 to return to sub menu.\n" +
+                    "Press 1 to add 2 existing courses to a Faculty member\n" +
+                    "Press 2 to add 2 to add two new courses to a Faculty member\n" +
+                    "Press 3 to retrieve course taught by Faculty member\n" +
+                    "Press 4 to determine if a course is taught by a specific Faculty member\n" +
+                    "Press 5 to determine which Faculty member teaches the most and least amount of courses");
+
+            switch (scanner.nextInt()) {
+
+
+                case 0: {
+                    System.out.println("Returning to sub menu");
+                    subMenu();
+                }
+                case 1: {
+                    System.out.println("Type index of Faculty member to add two existing courses");
+                    userInput2 = scanner.nextInt();
+                    if (allFaculties.get(userInput2).getName().isEmpty()) {
+                        System.out.println("Please create a name for this Faculty member");
+                        allFaculties.get(userInput2).setName(scanner.next());
+                    }
+                    if (allFaculties.get(userInput2).getBirthYear() == 0) {
+                        System.out.println("Add Birth year");
+                        allFaculties.get(userInput2).setBirthYear(scanner.nextInt());
+                    }
+                    for (int i = 0; i < 2; i++) {
+                        System.out.println("Type index of the course to add");
+                        allFaculties.get(userInput2).addCourseTaught(allCourses.get(scanner.nextInt()));
+                    }
+                    System.out.println("Press q to do another select another action.\nPress anything to exit");
+                    isq = scanner.next();
+                    break;
+                }
+                case 2:{
+                    System.out.println("Type index of Faculty member to add two new courses");
+                    userInput2 = scanner.nextInt();
+                    if (allFaculties.get(userInput2).getName().isEmpty()) {
+                        System.out.println("Please create a name for this Faculty member");
+                        allFaculties.get(userInput2).setName(scanner.next());
+                    }
+                    if (allFaculties.get(userInput2).getBirthYear() == 0) {
+                        System.out.println("Add Birth year");
+                        allFaculties.get(userInput2).setBirthYear(scanner.nextInt());
+                    }
+                    for (int i = 0; i < 2; i++) {
+                        System.out.println("Type index of the course to add");
+                        allFaculties.get(userInput2).addCourseTaught(courseCreation(allFaculties.get(userInput2)));
+                    }
+                    System.out.println("Press q to do another select another action.\nPress anything to exit");
+                    isq = scanner.next();
+                    break;
+                }
+                case 3: {
+                    System.out.println("Type index of Faculty and type index of course");
+                    System.out.println(
+                            allFaculties.get(scanner.nextInt()).getCourseTaught(scanner.nextInt()).toString());
+                    System.out.println("Press q to do another select another action.\nPress anything to exit");
+                    isq = scanner.next();
+                    break;
+                }
+                case 4: {
+                    System.out.println("Choose a Faculty member index");
+                    int facultyMember = scanner.nextInt();
+                    System.out.println("Choose course to determine if it is taught by the Faculty Member you choose");
+                    int course = scanner.nextInt();
+                    for(int i = 0; i < allFaculties.get(facultyMember).getNumCoursesTaught(); i++){
+                       if(allFaculties.get(facultyMember).getCourseTaught(i).equals(allCourses.get(course))){
+                            System.out.println(allCourses.get(course) +
+                                    " is taught by " +allFaculties.get(facultyMember));
+                        }
+                    }
+                    System.out.println("Press q to do another select another action.\nPress anything to exit");
+                    isq = scanner.next();
+                    break;
+                }
+                case 5:{
+                    System.out.println("Calculating order....");
+                    Collections.sort(allFaculties);
+                    System.out.println(allFaculties.get(0) + ": Teaches the least");
+                    System.out.println(allFaculties.get(allFaculties.size()-1).toString() +
+                            ": Teaches the most amount of classes");
+                    System.out.println("Press anything to exit.\nPress q to do another select another action.");
+                    isq = scanner.next();
+                    break;
+                }
+
+            }
+        }while (isq.equals("q"));
+    }
+
+    public static void setAllStudents(){Scanner scanner = new Scanner(System.in);
+        String isq = "l";
+        int userInput2;
+
+        do{
+            System.out.println("Type 0 to return to the Sub-Menu.\n" +
+                    "Press 1 to add 2 existing courses to a Student\n" +
+                    "Press 2 to add 2 new courses to a Student\n" +
+                    "Press 3 to get course taken by Student\n" +
+                    "Press 4 to calculate which Student has the most credits and " +
+                    "which student has the least amount of credits");
+
+            switch (scanner.nextInt()) {
+
+
+                case 0: {
+                    System.out.println("Returning to sub menu");
+                    subMenu();
+                }
+                case 1: {
+                    System.out.println("Type index of the Student to add two new courses");
+                    userInput2 = scanner.nextInt();
+                    if (allFaculties.get(userInput2).getName().isEmpty()) {
+                        System.out.println("Please create a name for this Student member");
+                        allFaculties.get(userInput2).setName(scanner.next());
+                    }
+                    if (allFaculties.get(userInput2).getBirthYear() == 0) {
+                        System.out.println("Add Birth year");
+                        allFaculties.get(userInput2).setBirthYear(scanner.nextInt());
+                    }
+                    for (int i = 0; i < 2; i++) {
+                        System.out.println("Type index of the course to add");
+                        allStudents.get(userInput2).addCourseTaken(allCourses.get(scanner.nextInt()));
+                        System.out.println(allFaculties.get(userInput2).toString());
+
+
+                    }
+                    System.out.println("Press q to do another select another action.\nPress anything to exit");
+                    isq = scanner.next();
+                    break;
+                }
+                case 2:{
+                    System.out.println("Type index of Student to add two new courses");
+                    userInput2 = scanner.nextInt();
+                    if (allStudents.get(userInput2).getName().isEmpty()) {
+                        System.out.println("Please create a name for this Student");
+                        allStudents.get(userInput2).setName(scanner.next());
+                    }
+                    if (allStudents.get(userInput2).getBirthYear() == 0) {
+                        System.out.println("Add Birth year");
+                        allStudents.get(userInput2).setBirthYear(scanner.nextInt());
+                    }
+                    for (int i = 0; i < 2; i++) {
+                        System.out.println("Type index of the course to add");
+                        allFaculties.get(userInput2).addCourseTaught(courseCreation(allStudents.get(userInput2)));
+                    }
+                    System.out.println("Press q to do another select another action.\nPress anything to exit");
+                    isq = scanner.next();
+                    break;
+
+                }
+                case 3: {
+                    System.out.println("Type index of Student and type index of course");
+                    System.out.println(allStudents.get(scanner.nextInt()).getCourseTaken(scanner.nextInt()).toString());
+                    System.out.println("Press q to do another select another action.\nPress anything to exit");
+                    isq = scanner.next();
+                    break;
+                }
+                case 4:{
+                    System.out.println("Calculating order....");
+                    Collections.sort(allStudents);
+                    System.out.println(allStudents.get(0) + ": Has the least amount of credits");
+                    System.out.println(allStudents.get(allStudents.size()-1).toString() +
+                            ": Has the most amount of credits");
+                    System.out.println("Press anything to exit.\nPress q to do another select another action.");
+                    isq = scanner.next();
+                    break;
+                }
+            }
+        }while (isq.equals("q"));
+    }
+
+
+    public static boolean isBoolean(String s){
+        return Boolean.parseBoolean(s);
+    }
+    public static void writeFile(PrintWriter printer, Course[] courses, Faculty[] faculties,
+                                 GeneralStaff[] generalStaffs, Student[] students) {
+        printer.println("\n**************************************************************\n" +
+                "SCHOOL DATABASE INFO:\n" +
+                "\n" +
+                "************************************************\n" +
+                "COURSES:");
+        for (Course cours : courses) {
+            printer.println(cours.toString());
+        }
+        printer.println("************************************************\n" +
+                "************************************************\n" +
+                "PERSONS:\n" +
+                "************************************************\n" +
+                "************************************************\n" +
+                "EMPLOYEES:\n" +
+                "************************************************\n" +
+                "************************************************\n" +
+                "GENERAL STAFF:");
+        for (GeneralStaff generalStaff : generalStaffs) {
+            printer.println(generalStaff.toString());
+        }
+        printer.println("************************************************\n" +
+                "************************************************\n" +
+                "FACULTY:");
+
+        for (Faculty faculty : faculties) {
+            printer.println(faculty.toString());
+        }
+        printer.println("************************************************\n" +
+                "************************************************\n" +
+                "STUDENTS:");
+        for (Student student : students) {
+            printer.println(student.toString());
+        }
+        printer.println("************************************************\n" +
+                "**************************************************************\n");
+        printer.flush();
+
+    }
+
+    public static void main(String[] args) throws IOException {
+        FileReader fileReader = new FileReader("SchoolDB_Initial.txt");
+        Scanner scanner = new Scanner(fileReader);
+
+        while (scanner.hasNextLine()) {
+            String s = scanner.nextLine();
+            System.out.println(s);
+        }
+
+
+        Course course = new Course(true, 771, "MAT", 4);
+        Course course1 = new Course(true, 777, "CMP", 4);
+        Course course2 = new Course(true, 711, "CMP", 4);
+        Course course3 = new Course(true, 723, "MAT", 4);
+        Course course4 = new Course(false, 168, "CMP", 4);
+        Course course5 = new Course(false, 338, "CMP", 4);
+        Course[] courses = {course, course1, course2, course3, course4, course5};
+
+        Faculty faculty = new Faculty();
+        Faculty faculty1 = new Faculty(true);
+        Faculty faculty2 = new Faculty("MAT", false);
+        Faculty faculty3 = new Faculty("Superman", 1938, "PHY", true);
+        Faculty[] faculties = {faculty, faculty1, faculty2, faculty3};
+
+
+        Student student = new Student();
+        Student student1 = new Student(false);
+        Student student2 = new Student("Math", false);
+        Student student3 = new Student("Wonderwoman", 1941, "JST", true);
+        Student[] students = {student, student1, student2, student3};
+
+        GeneralStaff generalStaff = new GeneralStaff();
+        GeneralStaff generalStaff1 = new GeneralStaff("advise students");
+        GeneralStaff generalStaff2 = new GeneralStaff("Sanitation", "clean");
+        GeneralStaff generalStaff3 = new GeneralStaff("Flash Gordon", 1934, "Security",
+                "safety");
+
+        GeneralStaff[] generalStaffs = {generalStaff, generalStaff1, generalStaff2, generalStaff3};
+
+        FileOutputStream fileStream = new FileOutputStream("SchoolDB_Updated.txt");
+        PrintWriter outFs = new PrintWriter(fileStream);
+        writeFile(outFs, courses, faculties, generalStaffs, students);
+        outFs.close();
+
+        PrintWriter printSystem = new PrintWriter(System.out);
+        writeFile(printSystem, courses, faculties, generalStaffs, students);
+        /*
+        menu();
+        allCourses.addAll(Arrays.asList(courses));
+        allFaculties.addAll(Arrays.asList(faculties));
+        allGeneralStaff.addAll(Arrays.asList(generalStaffs));
+        allStudents.addAll(Arrays.asList(students));
+        subMenu();
+        new FileOutputStream("SchoolDB_Updated.txt").close();
+        fileStream = new FileOutputStream("SchoolDB_Updated.txt");
+        outFs = new PrintWriter(fileStream);
+
+
+        writeFile(outFs,allCourses.toArray(new Course[0]), allFaculties.toArray(new Faculty[0]),
+                allGeneralStaff.toArray(new GeneralStaff[0]), allStudents.toArray(new Student[0]));
+        outFs.close();
+
+        writeFile(printSystem,allCourses.toArray(new Course[0]), allFaculties.toArray(new Faculty[0]),
+                allGeneralStaff.toArray(new GeneralStaff[0]), allStudents.toArray(new Student[0]));
+        printSystem.close();*/
+
+    }
 }
-
-
 

@@ -1,79 +1,66 @@
-
+import java.util.Objects;
 public class Course implements Comparable<Course> {
-	
-	private boolean isGraduateCourse;
-	private int courseNum;
-	private String courseDept;
-	private int numCredits;
-	
-	public Course(boolean graduate, int courseNum, String dept, int numCredits) {
-		super();
-		this.isGraduateCourse=graduate;
-		this.courseNum=courseNum;
-		this.courseDept=dept;
-		this.numCredits=numCredits;
-	}
-	
-	public boolean isGraduateCourse() {
-		return isGraduateCourse;
-	}
 
-	public int getCourseNum() {
-		return courseNum;
-	}
+    public Course(boolean isGraduateCourse, int courseNum, String courseDept, int numCredits) {
+    this.isGraduateCourse = isGraduateCourse;
+    this.courseNum = courseNum;
+    this.courseDept = courseDept;
+    this.numCredits = numCredits;
+    }
 
-	public String getCourseDept() {
-		return courseDept;
-	}
+    public boolean  isGraduateCourse(){
+        return isGraduateCourse;
+    }
 
-	public int getNumCredits() {
-		return numCredits;
-	}
-	
-	public String getCourseName() {
-		if(isGraduateCourse) {
-			return "G"+ courseDept + "" + courseNum;
-		}
-		else {
-			return "U" + courseDept + "" + courseNum;
-		}
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof Course) {
-			Course objCourse = (Course) obj;
-			return this.isGraduateCourse == objCourse.isGraduateCourse() && this.courseDept.equals(objCourse.courseDept) && this.courseNum == objCourse.getCourseNum() && this.numCredits == objCourse.getNumCredits();
-		}
-		
-		return false;
-	}
-	@Override
-	public String toString() {
-		String s = String.format("Course: %3s-%3d | Number of Credits: %02d | %s", getCourseDept(), 
-                                 courseNum, numCredits, (isGraduateCourse ? "Graduate" : "Undergraduate"));
-				
-		return s;
-	} 
-	
-	@Override
+    public int getCourseNum() {
+        return courseNum;
+    }
 
-	 public int compareTo(Course c) {
-		 if(this.courseNum > c.courseNum) {
-			 return 1;
-		 }
-		 if(this.courseNum < c.courseNum) {
-			 return -1;
-		 }
-		 else {
-			 return 0;
-		 }
-	        
+    public int getNumCredits() {
+        return numCredits;
+    }
 
-	    }
-	
+    public String getCourseDept() {
 
+        return courseDept;
+    }
+    public String getCourseName() {
+        if(isGraduateCourse){
+            return "G" + courseDept + courseNum;
+        }
+        else
+            return "U" + courseDept + courseNum;
+
+    }
+    @Override
+    public String toString(){
+        String ternary = isGraduateCourse ? "Graduate" : "Undergraduate";
+        return String.format("Course: %3s-%3d | Number of Credits: %02d | " + ternary,
+                courseDept, courseNum, numCredits, isGraduateCourse);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Course)) return false;
+        Course course = (Course) o;
+        return isGraduateCourse == course.isGraduateCourse && courseNum == course.courseNum &&
+                numCredits == course.numCredits && Objects.equals(courseDept, course.courseDept)
+                && Objects.equals(getCourseName(), course.getCourseName());
+    }
+
+    private boolean isGraduateCourse;
+    private int courseNum;
+    private String courseDept;
+    private int numCredits;
+
+    @Override
+    public int compareTo(Course o) {
+        if(this.courseNum == o.courseNum)
+             return 0;
+        else if(this.courseNum < o.courseNum)
+            return -1;
+        else
+            return 1;
+    }
 }
-
-
-	
